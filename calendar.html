@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Calendar – Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+  <style>
+    /* ── Calendar Page Styles ── */
+    .cal-wrap { max-width:1100px; margin:0 auto; padding:3rem 1.5rem 5rem; }
+
+    /* ── Month navigator ── */
+    .month-nav { display:flex; align-items:center; justify-content:center; gap:1.5rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+    .month-nav-btn { background:transparent; border:1.5px solid var(--green); color:var(--green); width:40px; height:40px; border-radius:50%; font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .month-nav-btn:hover { background:var(--green); color:var(--cream); }
+    .month-title { font-family:var(--font-head); color:var(--green); font-size:clamp(1.4rem,3vw,1.9rem); margin:0; min-width:220px; text-align:center; }
+
+    /* ── Calendar grid ── */
+    .cal-grid { background:#fff; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:0 4px 20px rgba(45,80,22,.08); margin-bottom:2.5rem; }
+    .cal-header-row { display:grid; grid-template-columns:repeat(7,1fr); background:var(--green); }
+    .cal-header-cell { padding:.75rem .5rem; text-align:center; color:var(--gold); font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    .cal-body { display:grid; grid-template-columns:repeat(7,1fr); }
+    .cal-cell { min-height:90px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); padding:.5rem .45rem; position:relative; transition:background .15s; }
+    .cal-cell:nth-child(7n) { border-right:none; }
+    .cal-cell:hover { background:#fdfaf5; }
+    .cal-cell.empty { background:var(--cream-dark); }
+    .cal-cell.today { background:#f0f7ea; }
+    .cal-cell.today .cal-day { background:var(--green); color:#fff; border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; }
+    .cal-cell.has-events { cursor:pointer; }
+    .cal-day { font-size:.88rem; font-weight:700; color:var(--green); margin-bottom:.3rem; width:26px; height:26px; display:flex; align-items:center; justify-content:center; }
+    .cal-day.sunday { color:#c0392b; }
+    .cal-day.saturday { color:#2980b9; }
+    .cal-event-dot { display:flex; align-items:center; gap:.3rem; margin-bottom:2px; }
+    .cal-event-dot-circle { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .cal-event-dot-text { font-size:.68rem; line-height:1.3; color:var(--text); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; max-width:100%; }
+
+    /* ── Event type colors ── */
+    .ev-holiday    { background:#e74c3c; }
+    .ev-exam       { background:#e67e22; }
+    .ev-activity   { background:#27ae60; }
+    .ev-academic   { background:#2980b9; }
+    .ev-other      { background:#8e44ad; }
+
+    /* ── Legend ── */
+    .cal-legend { display:flex; flex-wrap:wrap; gap:.85rem; justify-content:center; margin-bottom:2.5rem; }
+    .legend-item { display:flex; align-items:center; gap:.4rem; font-size:.85rem; color:var(--brown); }
+    .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+    /* ── Upcoming events list ── */
+    .events-section-title { font-family:var(--font-head); color:var(--green); font-size:1.3rem; margin:0 0 1.25rem; }
+    .event-list { display:flex; flex-direction:column; gap:.85rem; }
+    .event-item { background:#fff; border-radius:12px; border:1px solid var(--border); padding:1.1rem 1.25rem; display:flex; gap:1.1rem; align-items:flex-start; transition:transform .2s, box-shadow .2s; box-shadow:0 2px 8px rgba(45,80,22,.05); }
+    .event-item:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(45,80,22,.1); }
+    .event-date-box { flex-shrink:0; width:52px; text-align:center; border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+    .event-date-month { background:var(--green); color:var(--gold); font-size:.65rem; font-weight:700; text-transform:uppercase; padding:.2rem 0; letter-spacing:.08em; }
+    .event-date-day { font-family:var(--font-head); font-size:1.5rem; font-weight:700; color:var(--green); padding:.2rem 0 .3rem; background:var(--cream); }
+    .event-info { flex:1; }
+    .event-title { font-weight:700; color:var(--green); margin:0 0 .2rem; font-size:1rem; }
+    .event-meta { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin-bottom:.3rem; }
+    .event-type-badge { padding:.15rem .6rem; border-radius:50px; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#fff; }
+    .event-desc { color:var(--text-light); font-size:.9rem; margin:0; line-height:1.6; }
+
+    /* ── Admin add-event form ── */
+    .add-event-card { background:#fff; border-radius:14px; border:1px solid var(--border); padding:2rem; margin-bottom:2rem; box-shadow:0 4px 16px rgba(45,80,22,.07); display:none; }
+    .add-event-card.open { display:block; }
+    .ae-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:1.25rem; }
+    .ae-label { display:block; font-size:.88rem; font-weight:700; color:var(--green); margin-bottom:.35rem; }
+    .ae-input { width:100%; padding:.62rem .88rem; font-size:.98rem; border:1px solid var(--border); border-radius:7px; background:#fdfaf5; font-family:var(--font-body); color:var(--text); box-sizing:border-box; outline:none; transition:border-color .2s; }
+    .ae-input:focus { border-color:var(--green); }
+
+    /* ── Filter tabs ── */
+    .filter-tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .filter-tab { padding:.38rem 1rem; border-radius:50px; border:1px solid var(--border); background:transparent; color:var(--brown); font-size:.88rem; font-weight:600; cursor:pointer; font-family:var(--font-body); transition:all .15s; }
+    .filter-tab.active { background:var(--green); color:var(--cream); border-color:var(--green); }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1); }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* ── Empty state ── */
+    .ev-empty { text-align:center; padding:2.5rem; color:var(--brown); font-size:1rem; }
+
+    @media(max-width:600px) {
+      .cal-cell { min-height:58px; padding:.3rem .25rem; }
+      .cal-event-dot-text { display:none; }
+      .cal-event-dot-circle { width:6px; height:6px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<div class="page-header">
+  <h1>📅 School Calendar</h1>
+  <p>Academic events, exams, holidays and student activities</p>
+</div>
+
+<div class="cal-wrap">
+
+  <div id="alert-box"></div>
+
+  <!-- Admin bar -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem">
+    <p style="color:var(--brown);font-size:0.9rem;margin:0" id="owner-status">
+      🔒 <button data-owner-login style="background:none;border:none;color:var(--green);font-weight:700;font-size:0.9rem;cursor:pointer;text-decoration:underline;font-family:inherit;padding:0">Admin Login</button> to add or delete events
+    </p>
+    <button id="toggle-add-btn" class="btn-outline-green" style="display:none;align-items:center;gap:.4rem">
+      📅 Add Event
+    </button>
+  </div>
+
+  <!-- Add Event Form -->
+  <div class="add-event-card reveal" id="add-event-card">
+    <h2 style="font-family:var(--font-head);color:var(--green);margin:0 0 1.5rem;font-size:1.3rem">➕ Add New Event</h2>
+    <div class="ae-grid">
+      <div>
+        <label class="ae-label">Event Title *</label>
+        <input class="ae-input" id="ev-title" placeholder="e.g. Mid-Term Exams">
+      </div>
+      <div>
+        <label class="ae-label">Event Type *</label>
+        <select class="ae-input" id="ev-type">
+          <option value="">– Select type –</option>
+          <option value="holiday">🔴 Holiday</option>
+          <option value="exam">🟠 Exam</option>
+          <option value="activity">🟢 Student Activity</option>
+          <option value="academic">🔵 Academic</option>
+          <option value="other">🟣 Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="ae-label">Start Date *</label>
+        <input class="ae-input" id="ev-start" type="date">
+      </div>
+      <div>
+        <label class="ae-label">End Date (optional)</label>
+        <input class="ae-input" id="ev-end" type="date">
+      </div>
+      <div style="grid-column:1/-1">
+        <label class="ae-label">Description</label>
+        <textarea class="ae-input" id="ev-desc" rows="2" placeholder="Brief description of the event..."></textarea>
+      </div>
+    </div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+      <button id="ev-save-btn" class="btn-primary">Save Event</button>
+      <button id="ev-cancel-btn" class="btn-outline-green">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="cal-legend reveal">
+    <div class="legend-item"><div class="legend-dot ev-holiday"></div> Holiday</div>
+    <div class="legend-item"><div class="legend-dot ev-exam"></div> Exam</div>
+    <div class="legend-item"><div class="legend-dot ev-activity"></div> Activity</div>
+    <div class="legend-item"><div class="legend-dot ev-academic"></div> Academic</div>
+    <div class="legend-item"><div class="legend-dot ev-other"></div> Other</div>
+  </div>
+
+  <!-- Month navigator -->
+  <div class="month-nav reveal">
+    <button class="month-nav-btn" id="prev-month">‹</button>
+    <h2 class="month-title" id="month-title">Loading...</h2>
+    <button class="month-nav-btn" id="next-month">›</button>
+  </div>
+
+  <!-- Calendar grid -->
+  <div class="cal-grid reveal" id="cal-grid">
+    <div class="cal-header-row">
+      <div class="cal-header-cell">Sun</div>
+      <div class="cal-header-cell">Mon</div>
+      <div class="cal-header-cell">Tue</div>
+      <div class="cal-header-cell">Wed</div>
+      <div class="cal-header-cell">Thu</div>
+      <div class="cal-header-cell">Fri</div>
+      <div class="cal-header-cell">Sat</div>
+    </div>
+    <div class="cal-body" id="cal-body">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <!-- Upcoming / filtered events -->
+  <div class="reveal" id="events-list-section">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem">
+      <h2 class="events-section-title" id="events-list-title">Upcoming Events</h2>
+    </div>
+    <div class="filter-tabs" id="filter-tabs">
+      <button class="filter-tab active" data-type="all">All</button>
+      <button class="filter-tab" data-type="holiday">Holidays</button>
+      <button class="filter-tab" data-type="exam">Exams</button>
+      <button class="filter-tab" data-type="activity">Activities</button>
+      <button class="filter-tab" data-type="academic">Academic</button>
+      <button class="filter-tab" data-type="other">Other</button>
+    </div>
+    <div class="event-list" id="event-list">
+      <div class="skeleton" style="height:80px;border-radius:12px"></div>
+      <div class="skeleton" style="height:80px;border-radius:12px;margin-top:.85rem"></div>
+      <div class="skeleton" style="height:80px;border-radius:12px;margin-top:.85rem"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer id="footer"></footer>
+
+<script type="module">
+  import { supabase, initNavbar, initFooter } from './js/supabase.js';
+  import { initOwnerBar } from './js/owner-auth.js';
+
+  // ── State ──────────────────────────────────────────────────
+  let allEvents  = [];
+  let activeType = 'all';
+  const today    = new Date();
+  let viewYear   = today.getFullYear();
+  let viewMonth  = today.getMonth(); // 0-indexed
+
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const TYPE_COLORS = { holiday:'#e74c3c', exam:'#e67e22', activity:'#27ae60', academic:'#2980b9', other:'#8e44ad' };
+  const TYPE_LABELS = { holiday:'Holiday', exam:'Exam', activity:'Activity', academic:'Academic', other:'Other' };
+
+  // ── Init ───────────────────────────────────────────────────
+  async function init() {
+    await initNavbar('Calendar');
+    await initFooter();
+    await fetchEvents();
+    renderCalendar();
+    observeReveal();
+
+    // Owner auth — show add/delete controls only to admin
+    await initOwnerBar(
+      () => {
+        // onLogin — show add button and delete buttons
+        const btn = document.getElementById('toggle-add-btn');
+        if (btn) btn.style.display = 'flex';
+        const status = document.getElementById('owner-status');
+        if (status) status.innerHTML = '';
+        document.querySelectorAll('.owner-only').forEach(el => el.style.display = 'inline-block');
+      },
+      () => {
+        // onLogout — hide controls
+        const btn = document.getElementById('toggle-add-btn');
+        if (btn) btn.style.display = 'none';
+        document.querySelectorAll('.owner-only').forEach(el => el.style.display = 'none');
+      }
+    );
+  }
+
+  async function fetchEvents() {
+    const { data, error } = await supabase
+      .from('school_events')
+      .select('*')
+      .order('start_date', { ascending: true });
+    if (error) { showAlert('Could not load events: ' + error.message, 'error'); return; }
+    allEvents = data || [];
+    renderEventList();
+  }
+
+  // ── Calendar renderer ──────────────────────────────────────
+  function renderCalendar() {
+    document.getElementById('month-title').textContent = `${MONTHS[viewMonth]} ${viewYear}`;
+
+    const firstDay   = new Date(viewYear, viewMonth, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    // Get events for this month
+    const monthEvents = allEvents.filter(ev => {
+      const start = new Date(ev.start_date);
+      const end   = ev.end_date ? new Date(ev.end_date) : start;
+      return (start.getFullYear() === viewYear && start.getMonth() === viewMonth) ||
+             (end.getFullYear()   === viewYear && end.getMonth()   === viewMonth);
+    });
+
+    // Build day → events map
+    const dayMap = {};
+    monthEvents.forEach(ev => {
+      const start = new Date(ev.start_date);
+      const end   = ev.end_date ? new Date(ev.end_date) : start;
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        if (d.getFullYear() === viewYear && d.getMonth() === viewMonth) {
+          const day = d.getDate();
+          if (!dayMap[day]) dayMap[day] = [];
+          if (!dayMap[day].find(e => e.id === ev.id)) dayMap[day].push(ev);
+        }
+      }
+    });
+
+    let html = '';
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) html += `<div class="cal-cell empty"></div>`;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const isToday = day === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear();
+      const dayOfWeek = new Date(viewYear, viewMonth, day).getDay();
+      const events = dayMap[day] || [];
+      const dayClass = dayOfWeek === 0 ? 'sunday' : dayOfWeek === 6 ? 'saturday' : '';
+      const cellClass = `cal-cell${isToday?' today':''}${events.length?' has-events':''}`;
+
+      html += `<div class="${cellClass}" ${events.length ? `onclick="showDayEvents(${day})"` : ''}>
+        <div class="cal-day ${dayClass}">${day}</div>
+        ${events.slice(0,3).map(ev => `
+          <div class="cal-event-dot">
+            <div class="cal-event-dot-circle" style="background:${TYPE_COLORS[ev.event_type]||TYPE_COLORS.other}"></div>
+            <span class="cal-event-dot-text">${ev.title}</span>
+          </div>`).join('')}
+        ${events.length > 3 ? `<div style="font-size:.65rem;color:var(--brown)">+${events.length-3} more</div>` : ''}
+      </div>`;
+    }
+
+    // Fill remaining cells
+    const totalCells = firstDay + daysInMonth;
+    const remainder  = totalCells % 7;
+    if (remainder) for (let i = 0; i < 7 - remainder; i++) html += `<div class="cal-cell empty"></div>`;
+
+    document.getElementById('cal-body').innerHTML = html;
+  }
+
+  // ── Event list renderer ────────────────────────────────────
+  function renderEventList() {
+    const now      = new Date(); now.setHours(0,0,0,0);
+    let filtered   = allEvents.filter(ev => {
+      const end = ev.end_date ? new Date(ev.end_date) : new Date(ev.start_date);
+      return end >= now;
+    });
+    if (activeType !== 'all') filtered = filtered.filter(ev => ev.event_type === activeType);
+    filtered = filtered.slice(0, 20);
+
+    const list = document.getElementById('event-list');
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="ev-empty">📅 No ${activeType==='all'?'upcoming':activeType} events found.</div>`;
+      return;
+    }
+
+    // Re-apply owner visibility after re-render
+    const isOwnerNow = document.getElementById('admin-add-bar')?.style.display === 'flex';
+    list.innerHTML = filtered.map(ev => {
+      const start  = new Date(ev.start_date);
+      const mon    = MONTHS[start.getMonth()].slice(0,3).toUpperCase();
+      const day    = start.getDate();
+      const color  = TYPE_COLORS[ev.event_type] || TYPE_COLORS.other;
+      const label  = TYPE_LABELS[ev.event_type] || 'Other';
+      const range  = ev.end_date && ev.end_date !== ev.start_date
+        ? ` – ${new Date(ev.end_date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`
+        : '';
+      return `
+        <div class="event-item">
+          <div class="event-date-box">
+            <div class="event-date-month">${mon}</div>
+            <div class="event-date-day">${day}</div>
+          </div>
+          <div class="event-info">
+            <div class="event-meta">
+              <p class="event-title" style="margin:0">${ev.title}</p>
+              <span class="event-type-badge" style="background:${color}">${label}</span>
+              <span style="font-size:.8rem;color:var(--brown)">${start.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}${range}</span>
+            </div>
+            ${ev.description ? `<p class="event-desc">${ev.description}</p>` : ''}
+          </div>
+          <button onclick="deleteEvent('${ev.id}')" title="Delete" class="owner-only"
+            style="background:transparent;border:none;color:#ddd;cursor:pointer;font-size:1rem;padding:.25rem;flex-shrink:0;transition:color .15s;display:none"
+            onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='#ddd'">✕</button>
+        </div>`;
+    }).join('');
+  }
+
+    // After rendering, show delete buttons if owner is logged in
+    if (isOwnerNow) {
+      list.querySelectorAll('.owner-only').forEach(el => el.style.display = 'inline-block');
+    }
+  }
+
+  // ── Day click popup ────────────────────────────────────────
+  window.showDayEvents = function(day) {
+    const events = allEvents.filter(ev => {
+      const start = new Date(ev.start_date);
+      const end   = ev.end_date ? new Date(ev.end_date) : start;
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
+        if (d.getFullYear()===viewYear && d.getMonth()===viewMonth && d.getDate()===day) return true;
+      }
+      return false;
+    });
+    if (!events.length) return;
+    const html = events.map(ev => `
+      <div style="padding:.7rem 0;border-bottom:1px solid var(--border);display:flex;gap:.75rem;align-items:center">
+        <span style="width:10px;height:10px;border-radius:50%;background:${TYPE_COLORS[ev.event_type]||TYPE_COLORS.other};flex-shrink:0;display:inline-block"></span>
+        <div>
+          <p style="margin:0;font-weight:700;color:var(--green)">${ev.title}</p>
+          ${ev.description?`<p style="margin:0;font-size:.85rem;color:var(--brown)">${ev.description}</p>`:''}
+        </div>
+      </div>`).join('');
+    showAlert(`<strong>${MONTHS[viewMonth]} ${day}, ${viewYear}</strong><br>${html}`, 'info', 8000);
+  };
+
+  // ── Month navigation ───────────────────────────────────────
+  document.getElementById('prev-month').addEventListener('click', () => {
+    viewMonth--; if (viewMonth < 0) { viewMonth=11; viewYear--; }
+    renderCalendar();
+  });
+  document.getElementById('next-month').addEventListener('click', () => {
+    viewMonth++; if (viewMonth > 11) { viewMonth=0; viewYear++; }
+    renderCalendar();
+  });
+
+  // ── Filter tabs ────────────────────────────────────────────
+  document.getElementById('filter-tabs').addEventListener('click', e => {
+    if (!e.target.classList.contains('filter-tab')) return;
+    activeType = e.target.dataset.type;
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.toggle('active', b.dataset.type===activeType));
+    renderEventList();
+  });
+
+  // ── Add event ──────────────────────────────────────────────
+  const addCard = document.getElementById('add-event-card');
+  document.getElementById('toggle-add-btn').addEventListener('click', () => {
+    addCard.classList.toggle('open');
+    addCard.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+  document.getElementById('ev-cancel-btn').addEventListener('click', () => addCard.classList.remove('open'));
+
+  document.getElementById('ev-save-btn').addEventListener('click', async () => {
+    const title = document.getElementById('ev-title').value.trim();
+    const type  = document.getElementById('ev-type').value;
+    const start = document.getElementById('ev-start').value;
+    const end   = document.getElementById('ev-end').value;
+    const desc  = document.getElementById('ev-desc').value.trim();
+    if (!title || !type || !start) { showAlert('Please fill in Title, Type and Start Date.', 'error'); return; }
+
+    const btn = document.getElementById('ev-save-btn');
+    btn.textContent = 'Saving...'; btn.disabled = true;
+    const { error } = await supabase.from('school_events').insert([{
+      title, event_type: type, start_date: start,
+      end_date: end || null, description: desc || null,
+      created_at: new Date().toISOString()
+    }]);
+    btn.textContent = 'Save Event'; btn.disabled = false;
+    if (error) { showAlert('Error: ' + error.message, 'error'); return; }
+    showAlert('✅ Event added!', 'success');
+    document.getElementById('ev-title').value = '';
+    document.getElementById('ev-type').value  = '';
+    document.getElementById('ev-start').value = '';
+    document.getElementById('ev-end').value   = '';
+    document.getElementById('ev-desc').value  = '';
+    addCard.classList.remove('open');
+    await fetchEvents();
+    renderCalendar();
+  });
+
+  // ── Delete event ───────────────────────────────────────────
+  window.deleteEvent = async function(id) {
+    if (!confirm('Delete this event?')) return;
+    await supabase.from('school_events').delete().eq('id', id);
+    showAlert('Event deleted.', 'success');
+    await fetchEvents();
+    renderCalendar();
+  };
+
+  // ── Alert helper ───────────────────────────────────────────
+  function showAlert(msg, type, dur=4000) {
+    const el = document.getElementById('alert-box');
+    const bg  = type==='success'?'#dcfce7':type==='error'?'#fee2e2':'#dbeafe';
+    const col = type==='success'?'#166534':type==='error'?'#991b1b':'#1e3a8a';
+    const bdr = type==='success'?'#86efac':type==='error'?'#fca5a5':'#93c5fd';
+    el.innerHTML = `<div style="background:${bg};border:1px solid ${bdr};color:${col};padding:1rem 1.25rem;border-radius:10px;margin-bottom:1.25rem;font-size:.93rem">${msg}</div>`;
+    setTimeout(() => el.innerHTML='', dur);
+  }
+
+  // ── Scroll reveal ──────────────────────────────────────────
+  function observeReveal() {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  }
+
+  init();
+</script>
+</body>
+</html>

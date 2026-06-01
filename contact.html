@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+</head>
+<body>
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+<div class="page-header">
+  <h1 id="page-title">Get in Touch</h1>
+  <p id="page-desc">We'd love to hear from you</p>
+</div>
+<section class="section">
+  <div class="section-inner">
+    <div id="social-row" class="social-row" style="justify-content:center;margin-bottom:2.5rem"></div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3 id="info-title">School Information</h3>
+        <div id="school-info-rows">
+          <div class="skeleton" style="height:1rem;margin-bottom:1rem"></div>
+          <div class="skeleton" style="height:1rem;margin-bottom:1rem"></div>
+          <div class="skeleton" style="height:1rem"></div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h3 id="form-title">Send Us a Message</h3>
+        <div id="form-alert"></div>
+        <div id="form-wrap">
+          <div class="form-group">
+            <label class="form-label" id="label-name" for="f-name">Your Name *</label>
+            <input class="form-input" id="f-name" type="text">
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="label-email" for="f-email">Email Address *</label>
+            <input class="form-input" id="f-email" type="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="label-message" for="f-message">Message *</label>
+            <textarea class="form-input" id="f-message" rows="5" style="resize:vertical"></textarea>
+          </div>
+          <button class="form-submit" id="f-submit">Send Message</button>
+        </div>
+      </div>
+    </div>
+    <div class="map-wrap">
+      <div class="map-bar" id="map-label">📍 Find Us</div>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3907.27!2d98.5739!3d16.7174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDQzJzAyLjYiTiA5OMKwMzQnMjYuMCJF!5e0!3m2!1sen!2sth!4v1234567890"
+        width="100%" height="380" style="border:0;display:block"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Shalom Education Centre Location">
+      </iframe>
+    </div>
+  </div>
+</section>
+<footer id="footer"></footer>
+<script type="module">
+  import { supabase, initNavbar, initFooter, loadSchoolInfo } from './js/supabase.js';
+  import { t } from './js/lang.js';
+
+  function applyTranslations() {
+    document.getElementById('page-title').textContent    = t('contact_title');
+    document.getElementById('page-desc').textContent     = t('contact_desc');
+    document.getElementById('info-title').textContent    = t('contact_info');
+    document.getElementById('form-title').textContent    = t('contact_form_title');
+    document.getElementById('label-name').textContent    = t('label_name');
+    document.getElementById('label-email').textContent   = t('label_email');
+    document.getElementById('label-message').textContent = t('label_message');
+    document.getElementById('f-name').placeholder        = t('ph_name');
+    document.getElementById('f-email').placeholder       = t('ph_email');
+    document.getElementById('f-message').placeholder     = t('ph_message');
+    document.getElementById('f-submit').textContent      = t('btn_send');
+    document.getElementById('map-label').textContent     = t('find_us');
+  }
+
+  async function init() {
+    applyTranslations();
+    await initNavbar('Contact');
+    const info = await loadSchoolInfo();
+    await initFooter(info);
+
+    // Social buttons
+    const socials = [
+      info.facebook_url && { label: '📘 Facebook', href: info.facebook_url },
+      info.youtube_url  && { label: '▶️ YouTube',  href: info.youtube_url  },
+      info.line_id      && { label: '💬 LINE',     href: `https://line.me/ti/p/${info.line_id}` },
+    ].filter(Boolean);
+    document.getElementById('social-row').innerHTML = socials
+      .map(s => `<a class="social-btn" href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`).join('');
+
+    // Info rows
+    const rows = [
+      info.address      && { icon:'📍', label: t('label_address'), value: info.address },
+      info.phone        && { icon:'📞', label: t('label_phone'),   value: info.phone   },
+      info.email        && { icon:'✉️', label: t('label_email_lbl'), value: info.email },
+      info.office_hours && { icon:'🕐', label: t('label_hours'),   value: info.office_hours },
+      info.line_id      && { icon:'💬', label: t('label_line'),    value: info.line_id },
+    ].filter(Boolean);
+    document.getElementById('school-info-rows').innerHTML = rows.length
+      ? rows.map(r => `<div class="info-row"><span class="info-icon">${r.icon}</span><div><span class="info-label">${r.label}</span><span class="info-value">${r.value}</span></div></div>`).join('')
+      : `<p style="color:var(--brown)">Contact information not set yet.</p>`;
+  }
+
+  document.getElementById('f-submit').addEventListener('click', async () => {
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+    const alertEl = document.getElementById('form-alert');
+    if (!name || !email || !message) {
+      alertEl.innerHTML = `<div class="alert alert-error">${t('err_fill')}</div>`; return;
+    }
+    document.getElementById('f-submit').textContent = t('btn_sending');
+    document.getElementById('f-submit').disabled = true;
+    const { error } = await supabase.from('contact_messages').insert([{ name, email, message, created_at: new Date().toISOString() }]);
+    if (error) {
+      alertEl.innerHTML = `<div class="alert alert-error">${t('err_failed')}</div>`;
+      document.getElementById('f-submit').textContent = t('btn_send');
+      document.getElementById('f-submit').disabled = false;
+    } else {
+      document.getElementById('form-wrap').innerHTML = `
+        <div style="text-align:center;padding:2rem 0">
+          <div style="font-size:3rem;margin-bottom:1rem">✅</div>
+          <p style="color:var(--green);font-size:1.15rem;font-weight:600;margin-bottom:0.5rem">${t('msg_success_title')}</p>
+          <p style="color:var(--brown)">${t('msg_success_desc')}</p>
+          <button onclick="location.reload()" style="margin-top:1.5rem;background:transparent;color:var(--green);border:1px solid var(--green);border-radius:8px;padding:0.6rem 1.5rem;font-family:var(--font-body);font-size:1rem;cursor:pointer">${t('btn_another')}</button>
+        </div>`;
+    }
+  });
+
+  init();
+</script>
+</body>
+</html>

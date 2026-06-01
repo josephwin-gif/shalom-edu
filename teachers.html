@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachers – Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+</head>
+<body>
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+<div class="page-header">
+  <h1 id="page-title">Our Teachers</h1>
+  <p id="page-desc">The dedicated educators of Shalom Education Centre</p>
+</div>
+<section class="section">
+  <div class="section-inner">
+    <div class="teachers-grid" id="teachers-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+      <div class="skeleton" style="height:280px"></div>
+      <div class="skeleton" style="height:280px"></div>
+      <div class="skeleton" style="height:280px"></div>
+      <div class="skeleton" style="height:280px"></div>
+    </div>
+  </div>
+</section>
+<footer id="footer"></footer>
+<script type="module">
+  import { supabase, initNavbar, initFooter, teacherCardLight } from './js/supabase.js';
+  import { t } from './js/lang.js';
+
+  document.getElementById('page-title').textContent = t('teachers_title');
+  document.getElementById('page-desc').textContent  = t('teachers_desc');
+
+  async function init() {
+    await initNavbar('Teachers');
+    await initFooter();
+    const { data: teachers } = await supabase.from('teachers').select('*').order('display_order', { ascending: true });
+    const grid = document.getElementById('teachers-grid');
+    grid.innerHTML = (!teachers || teachers.length === 0)
+      ? `<div class="empty-state" style="grid-column:1/-1"><span class="emoji">👩‍🏫</span>${t('teachers_empty')}</div>`
+      : teachers.map(teacherCardLight).join('');
+  }
+  init();
+</script>
+</body>
+</html>

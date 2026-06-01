@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article – Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+</head>
+<body>
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+<div id="article-wrap" style="min-height:60vh;background:var(--cream)">
+  <div class="article-body">
+    <div class="skeleton" style="height:380px;border-radius:0 0 16px 16px;margin-bottom:2rem"></div>
+    <div class="skeleton" style="height:2rem;margin-bottom:1rem"></div>
+    <div class="skeleton" style="height:8rem"></div>
+  </div>
+</div>
+<footer id="footer"></footer>
+<script type="module">
+  import { supabase, initNavbar, initFooter, formatDate, badgeClass } from './js/supabase.js';
+  import { t } from './js/lang.js';
+
+  async function init() {
+    await initNavbar('Articles');
+    await initFooter();
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) { document.getElementById('article-wrap').innerHTML = `<div class="empty-state"><span class="emoji">😕</span>Article not found.</div>`; return; }
+    const { data: a, error } = await supabase.from('articles').select('*').eq('id', id).single();
+    if (error || !a) { document.getElementById('article-wrap').innerHTML = `<div class="empty-state"><span class="emoji">😕</span>Article not found.</div>`; return; }
+    document.title = `${a.title} – Shalom Education Centre`;
+    document.getElementById('article-wrap').innerHTML = `
+      ${a.thumbnail_url ? `<img class="article-hero" src="${a.thumbnail_url}" alt="${a.title}">` : ''}
+      <div class="article-body">
+        <a href="articles.html" class="back-link">${t('back_articles')}</a>
+        <span class="${badgeClass(a.category)}">${a.category || 'General'}</span>
+        <h1>${a.title}</h1>
+        <p class="article-meta">By ${a.author || 'Staff'} &nbsp;·&nbsp; ${formatDate(a.published_at)}</p>
+        <div class="article-content">${a.content || ''}</div>
+        <a href="articles.html" class="back-link" style="margin-top:2.5rem">${t('back_articles')}</a>
+      </div>`;
+  }
+  init();
+</script>
+</body>
+</html>

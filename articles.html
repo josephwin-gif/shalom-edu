@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articles – Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+</head>
+<body>
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+<div class="page-header">
+  <h1 id="page-title">News &amp; Articles</h1>
+  <p id="page-desc">Stories, announcements and updates from Shalom Education Centre</p>
+</div>
+<section class="section">
+  <div class="section-inner">
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn active" data-cat="All" id="filter-all">All</button>
+      <button class="filter-btn" data-cat="General">General</button>
+      <button class="filter-btn" data-cat="Events">Events</button>
+      <button class="filter-btn" data-cat="Academic">Academic</button>
+      <button class="filter-btn" data-cat="Sports">Sports</button>
+      <button class="filter-btn" data-cat="Announcement">Announcement</button>
+    </div>
+    <div class="cards-grid" id="articles-grid">
+      <div class="skeleton" style="height:320px"></div>
+      <div class="skeleton" style="height:320px"></div>
+      <div class="skeleton" style="height:320px"></div>
+    </div>
+    <div id="pagination" class="text-center" style="margin-top:2rem;display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap"></div>
+  </div>
+</section>
+<footer id="footer"></footer>
+<script type="module">
+  import { supabase, initNavbar, initFooter, articleCard } from './js/supabase.js';
+  import { t } from './js/lang.js';
+
+  const PER_PAGE = 6;
+  let allArticles = [], filtered = [], currentPage = 1, activeCat = 'All';
+
+  document.getElementById('page-title').textContent = t('articles_title');
+  document.getElementById('page-desc').textContent  = t('articles_desc');
+  document.getElementById('filter-all').textContent = t('filter_all');
+
+  async function init() {
+    await initNavbar('Articles');
+    await initFooter();
+    const { data } = await supabase.from('articles').select('*').order('published_at', { ascending: false });
+    allArticles = data || [];
+    applyFilter('All');
+  }
+
+  function applyFilter(cat) {
+    activeCat = cat; currentPage = 1;
+    filtered = cat === 'All' ? allArticles : allArticles.filter(a => a.category === cat);
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+    render();
+  }
+
+  function render() {
+    const grid = document.getElementById('articles-grid');
+    const page = filtered.slice((currentPage-1)*PER_PAGE, currentPage*PER_PAGE);
+    grid.innerHTML = filtered.length === 0
+      ? `<div class="empty-state" style="grid-column:1/-1"><span class="emoji">📰</span>${t('news_empty')}</div>`
+      : page.map(articleCard).join('');
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const total = Math.ceil(filtered.length / PER_PAGE);
+    const wrap  = document.getElementById('pagination');
+    if (total <= 1) { wrap.innerHTML = ''; return; }
+    const s = 'border:1px solid var(--green);color:var(--green);background:transparent;border-radius:6px;padding:0.4rem 1rem;font-family:var(--font-body);cursor:pointer;font-size:0.92rem';
+    wrap.innerHTML = [
+      `<button onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''} style="${s}">←</button>`,
+      ...Array.from({length:total},(_,i)=>i+1).map(p=>`<button onclick="changePage(${p})" style="${s}${p===currentPage?';background:var(--green);color:var(--cream)':''}">${p}</button>`),
+      `<button onclick="changePage(${currentPage+1})" ${currentPage===total?'disabled':''} style="${s}">→</button>`,
+    ].join('');
+  }
+
+  window.changePage = function(p) {
+    const total = Math.ceil(filtered.length / PER_PAGE);
+    if (p < 1 || p > total) return;
+    currentPage = p; render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  document.getElementById('filter-bar').addEventListener('click', e => {
+    if (e.target.classList.contains('filter-btn')) applyFilter(e.target.dataset.cat);
+  });
+
+  init();
+</script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Founder's Message – Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+  <style>
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); }
+    .reveal.from-left  { transform:translateX(-32px) translateY(0); }
+    .reveal.from-right { transform:translateX(32px) translateY(0); }
+    .reveal.visible    { opacity:1; transform:none !important; }
+
+    /* ── Lang switcher on page ── */
+    .page-lang-bar {
+      max-width:1100px; margin:1.5rem auto 0; padding:0 1.5rem;
+      display:flex; justify-content:flex-end; align-items:center; gap:0.5rem;
+    }
+    .lang-btn {
+      padding:0.3rem 0.85rem; border-radius:6px;
+      border:1px solid var(--border); background:transparent;
+      color:var(--brown); font-size:0.82rem; font-weight:700;
+      cursor:pointer; font-family:var(--font-body); transition:all 0.15s;
+    }
+    .lang-btn.active { background:var(--green); color:var(--cream); border-color:var(--green); }
+
+    /* ── Hero ── */
+    .founder-hero { background:linear-gradient(135deg,#1a3009 0%,#2D5016 60%,#3d6b1e 100%); padding:5rem 2rem 4rem; text-align:center; position:relative; overflow:hidden; }
+    .founder-hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events:none; }
+    .founder-hero-content { position:relative; z-index:1; max-width:700px; margin:0 auto; }
+    .founder-eyebrow { color:var(--gold); font-size:.82rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; display:block; margin-bottom:.75rem; }
+    .founder-hero h1 { font-family:var(--font-head); color:var(--cream); font-size:clamp(2rem,5vw,3.2rem); margin:0 0 1rem; line-height:1.15; }
+    .founder-hero p { color:rgba(245,240,232,.75); font-size:clamp(1rem,2.5vw,1.2rem); margin:0; line-height:1.75; }
+
+    /* ── Profile layout ── */
+    .profile-section { max-width:1100px; margin:0 auto; padding:4rem 1.5rem 0; }
+    .profile-card { display:grid; grid-template-columns:300px 1fr; gap:3.5rem; align-items:start; }
+    @media(max-width:768px) { .profile-card { grid-template-columns:1fr; } }
+
+    /* ── Photo col ── */
+    .profile-photo-col { position:sticky; top:90px; }
+    .profile-photo-wrap { position:relative; border-radius:20px; overflow:hidden; }
+    .profile-photo { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; border-radius:20px; box-shadow:0 20px 50px rgba(45,80,22,.2); }
+    .profile-photo-ph { width:100%; aspect-ratio:3/4; border-radius:20px; background:linear-gradient(135deg,var(--green),var(--green-mid)); display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; }
+    .profile-photo-ph span { font-size:4rem; opacity:0.4; }
+    .profile-photo-ph p { color:rgba(245,240,232,0.5); font-size:0.85rem; margin:0.5rem 0 0; }
+    .profile-overlay { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top,rgba(26,48,9,.9) 0%,transparent 60%); padding:2rem 1.25rem 1.25rem; }
+    .profile-name { font-family:var(--font-head); color:var(--cream); font-size:1.35rem; margin:0 0 .2rem; }
+    .profile-role { color:var(--gold); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin:0; }
+
+    /* ── Content col ── */
+    .quote-block { background:var(--green); border-radius:16px; padding:2rem 2rem 2rem 2.5rem; margin-bottom:2.5rem; position:relative; overflow:hidden; }
+    .quote-block::before { content:'\201C'; font-family:var(--font-head); font-size:8rem; color:rgba(201,168,76,.18); position:absolute; top:-1.5rem; left:.5rem; line-height:1; }
+    .quote-text { font-style:italic; color:var(--cream); font-size:clamp(1.05rem,2vw,1.25rem); line-height:1.8; margin:0; position:relative; z-index:1; }
+    .quote-attr { color:var(--gold); font-size:.85rem; font-weight:700; margin:.75rem 0 0; display:block; position:relative; z-index:1; }
+
+    .section-block { margin-bottom:2.5rem; }
+    .block-label { display:flex; align-items:center; gap:.6rem; font-size:.78rem; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:.14em; margin-bottom:.75rem; }
+    .block-label::after { content:''; flex:1; height:1px; background:var(--border); }
+    .block-text { color:var(--text); font-size:1.05rem; line-height:1.9; margin:0; white-space:pre-line; }
+
+    /* ── Values grid ── */
+    .values-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:1rem; margin-top:1rem; }
+    .value-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:1.2rem; text-align:center; transition:transform .2s,box-shadow .2s; }
+    .value-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(45,80,22,.1); }
+    .value-icon { font-size:1.8rem; display:block; margin-bottom:.5rem; }
+    .value-title { font-family:var(--font-head); color:var(--green); font-size:.95rem; margin:0 0 .25rem; }
+    .value-desc { color:var(--brown); font-size:.82rem; margin:0; line-height:1.5; }
+
+    /* ── Admin bar ── */
+    .admin-bar { max-width:1100px; margin:1rem auto 0; padding:0 1.5rem; display:none; justify-content:flex-end; }
+
+    /* ── Edit panel ── */
+    .edit-panel { background:#fff; border-radius:16px; border:1px solid var(--border); padding:2rem; margin:1.5rem auto 0; max-width:1100px; display:none; box-shadow:0 4px 20px rgba(45,80,22,.08); }
+    .edit-panel.open { display:block; }
+    .ep-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.1rem; margin-bottom:1.25rem; }
+    .ep-label { display:block; font-size:.88rem; font-weight:700; color:var(--green); margin-bottom:.35rem; }
+    .ep-input { width:100%; padding:.62rem .88rem; font-size:.98rem; border:1px solid var(--border); border-radius:7px; background:#fdfaf5; font-family:var(--font-body); color:var(--text); box-sizing:border-box; outline:none; transition:border-color .2s; }
+    .ep-input:focus { border-color:var(--green); }
+    .ep-tab-row { display:flex; gap:0.4rem; margin-bottom:1.25rem; background:var(--cream-dark); border-radius:10px; padding:4px; }
+    .ep-tab { flex:1; padding:0.55rem; border:none; border-radius:7px; font-family:var(--font-body); font-size:0.88rem; font-weight:600; cursor:pointer; background:transparent; color:var(--brown); transition:all 0.15s; }
+    .ep-tab.active { background:#fff; color:var(--green); box-shadow:0 1px 6px rgba(0,0,0,0.1); }
+    .ep-lang-panel { display:none; }
+    .ep-lang-panel.active { display:block; }
+
+    @media(max-width:600px) {
+      .profile-photo-col { position:static; }
+      .values-grid { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- Hero -->
+<div class="founder-hero">
+  <div class="founder-hero-content reveal">
+    <span class="founder-eyebrow" id="hero-eyebrow">Meet the Visionary</span>
+    <h1 id="hero-title">Founder's Message</h1>
+    <p id="hero-subtitle">The heart, story and vision behind Shalom Education Centre</p>
+  </div>
+</div>
+
+<!-- Page language switcher + admin bar -->
+<div style="max-width:1100px;margin:1.5rem auto 0;padding:0 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem">
+  <div style="display:flex;align-items:center;gap:0.4rem">
+    <span style="font-size:0.82rem;color:var(--brown);font-weight:600">View in:</span>
+    <button class="lang-btn active" id="page-lang-en" onclick="setPageLang('en')">English</button>
+    <button class="lang-btn" id="page-lang-my" onclick="setPageLang('my')">မြန်မာ</button>
+  </div>
+  <div id="admin-bar" style="display:none">
+    <button id="toggle-edit-btn" class="btn-outline-green" style="font-size:.88rem">✏️ Edit Content</button>
+  </div>
+  <!-- Show login trigger when not admin -->
+  <div id="visitor-bar">
+    <button data-owner-login style="background:none;border:none;color:var(--green);font-weight:700;font-size:0.85rem;cursor:pointer;text-decoration:underline;font-family:inherit;padding:0;opacity:0.6">🔑 Owner Login</button>
+  </div>
+</div>
+
+<!-- Alert -->
+<div style="max-width:1100px;margin:.75rem auto 0;padding:0 1.5rem" id="alert-box"></div>
+
+<!-- Edit Panel -->
+<div class="edit-panel" id="edit-panel">
+  <h2 style="font-family:var(--font-head);color:var(--green);margin:0 0 1.25rem;font-size:1.3rem">✏️ Edit Founder Information</h2>
+
+  <!-- Language tabs inside edit panel -->
+  <div class="ep-tab-row">
+    <button class="ep-tab active" onclick="switchEditLang('en')">🇬🇧 English Content</button>
+    <button class="ep-tab" onclick="switchEditLang('my')">🇲🇲 Myanmar Content</button>
+    <button class="ep-tab" onclick="switchEditLang('general')">📋 General</button>
+  </div>
+
+  <!-- English fields -->
+  <div class="ep-lang-panel active" id="ep-panel-en">
+    <div class="ep-grid">
+      <div style="grid-column:1/-1"><label class="ep-label">Opening Quote (English)</label><textarea class="ep-input" id="ep-quote-en" rows="2" placeholder="An inspiring quote..."></textarea></div>
+      <div style="grid-column:1/-1"><label class="ep-label">Personal Message (English)</label><textarea class="ep-input" id="ep-message-en" rows="4" placeholder="Founder's personal message to students and families..."></textarea></div>
+      <div style="grid-column:1/-1"><label class="ep-label">Inspiration — Why the school was established (English)</label><textarea class="ep-input" id="ep-inspiration-en" rows="3" placeholder="What inspired founding Shalom..."></textarea></div>
+      <div style="grid-column:1/-1"><label class="ep-label">Vision (English)</label><textarea class="ep-input" id="ep-vision-en" rows="3" placeholder="Founder's vision for the school..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- Myanmar fields -->
+  <div class="ep-lang-panel" id="ep-panel-my">
+    <div class="ep-grid">
+      <div style="grid-column:1/-1"><label class="ep-label">Opening Quote (Myanmar)</label><textarea class="ep-input" id="ep-quote-my" rows="2" placeholder="မိတ်ဆက်စကားလုံး..."></textarea></div>
+      <div style="grid-column:1/-1"><label class="ep-label">Personal Message (Myanmar)</label><textarea class="ep-input" id="ep-message-my" rows="4" placeholder="တည်ထောင်သူ၏ မက်ဆေ့..."></textarea></div>
+      <div style="grid-column:1/-1"><label class="ep-label">Inspiration (Myanmar)</label><textarea class="ep-input" id="ep-inspiration-my" rows="3" placeholder="ကျောင်းတည်ထောင်ရသောအကြောင်းရင်း..."></textarea></div>
+      <div style="grid-column:1/-1"><label class="ep-label">Vision (Myanmar)</label><textarea class="ep-input" id="ep-vision-my" rows="3" placeholder="အနာဂတ်ရည်မှန်းချက်..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- General fields -->
+  <div class="ep-lang-panel" id="ep-panel-general">
+    <div class="ep-grid">
+      <div><label class="ep-label">Founder's Name</label><input class="ep-input" id="ep-name" placeholder="e.g. Pastor John Doe"></div>
+      <div><label class="ep-label">Role / Title</label><input class="ep-input" id="ep-role" placeholder="e.g. Founder & Director"></div>
+    </div>
+
+    <h3 style="font-family:var(--font-head);color:var(--green);font-size:1.1rem;margin:1rem 0 0.85rem">💫 Core Values (icon + title + description)</h3>
+    <div id="values-rows"></div>
+    <button onclick="addValueRow()" style="background:transparent;border:1px dashed var(--green);color:var(--green);border-radius:8px;padding:.5rem 1.25rem;font-family:var(--font-body);font-size:.9rem;cursor:pointer;margin-bottom:1.5rem">+ Add Value</button>
+
+    <h3 style="font-family:var(--font-head);color:var(--green);font-size:1.1rem;margin:0 0 0.85rem">📷 Founder's Photo</h3>
+    <input type="file" accept="image/*" id="ep-photo" style="margin-bottom:0.75rem;font-size:.9rem">
+    <div id="photo-preview-wrap" style="display:none;margin-bottom:1rem">
+      <img id="photo-preview" style="width:100px;height:133px;object-fit:cover;border-radius:10px;border:2px solid var(--gold)">
+    </div>
+  </div>
+
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.25rem">
+    <button id="ep-save-btn" class="btn-primary">💾 Save All Changes</button>
+    <button id="ep-cancel-btn" class="btn-outline-green">Cancel</button>
+  </div>
+</div>
+
+<!-- Main profile content -->
+<div class="profile-section">
+  <div class="profile-card">
+
+    <!-- Photo col -->
+    <div class="profile-photo-col reveal from-left">
+      <div class="profile-photo-wrap" id="founder-photo-wrap">
+        <div class="profile-photo-ph" id="photo-placeholder" onclick="document.getElementById('toggle-edit-btn')?.click()">
+          <span>👤</span>
+          <p>No photo yet</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:1.25rem">
+        <p class="profile-name" id="founder-name" style="font-family:var(--font-head);color:var(--green);font-size:1.3rem;margin:0 0 0.25rem"></p>
+        <p class="profile-role" id="founder-role" style="color:var(--gold);font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:0"></p>
+      </div>
+    </div>
+
+    <!-- Content col -->
+    <div>
+
+      <!-- Quote -->
+      <div class="quote-block reveal" id="quote-block" style="display:none">
+        <p class="quote-text" id="founder-quote"></p>
+        <span class="quote-attr" id="founder-quote-attr"></span>
+      </div>
+
+      <!-- Message -->
+      <div class="section-block reveal" id="message-block" style="display:none">
+        <div class="block-label" id="label-message">✉️ Personal Message</div>
+        <p class="block-text" id="founder-message"></p>
+      </div>
+
+      <!-- Inspiration -->
+      <div class="section-block reveal" id="inspiration-block" style="display:none">
+        <div class="block-label" id="label-inspiration">💡 Why Shalom Was Founded</div>
+        <p class="block-text" id="founder-inspiration"></p>
+      </div>
+
+      <!-- Vision -->
+      <div class="section-block reveal" id="vision-block" style="display:none">
+        <div class="block-label" id="label-vision">🔭 Vision for the Future</div>
+        <p class="block-text" id="founder-vision"></p>
+      </div>
+
+      <!-- Values -->
+      <div class="section-block reveal" id="values-section" style="display:none">
+        <div class="block-label">💫 Core Values</div>
+        <div class="values-grid" id="values-grid"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="height:5rem"></div>
+<footer id="footer"></footer>
+
+<script type="module">
+  import { supabase, initNavbar, initFooter } from './js/supabase.js';
+  import { initOwnerBar } from './js/owner-auth.js';
+  import { getLang, setLang } from './js/lang.js';
+
+  let founderData  = null;
+  let pageLang     = getLang(); // use global site language as default
+
+  // ── Labels per language ──
+  const LABELS = {
+    en: {
+      eyebrow:     'Meet the Visionary',
+      title:       "Founder's Message",
+      subtitle:    'The heart, story and vision behind Shalom Education Centre',
+      message:     '✉️ Personal Message',
+      inspiration: '💡 Why Shalom Was Founded',
+      vision:      '🔭 Vision for the Future',
+    },
+    my: {
+      eyebrow:     'ကျွန်ုပ်တို့၏ ဦးဆောင်သူ',
+      title:       'တည်ထောင်သူ၏ မက်ဆေ့',
+      subtitle:    'Shalom Education Centre ၏ ရှင်းလင်းသောဦးနှောက်နှင့် ရည်မှန်းချက်',
+      message:     '✉️ ကိုယ်ပိုင်မက်ဆေ့',
+      inspiration: '💡 Shalom ကို တည်ထောင်ရသောအကြောင်းရင်း',
+      vision:      '🔭 အနာဂတ်ရည်မှန်းချက်',
+    }
+  };
+
+  // ── Apply language to page labels ──
+  function applyPageLang(lang) {
+    pageLang = lang;
+    const L = LABELS[lang] || LABELS.en;
+    document.getElementById('hero-eyebrow').textContent      = L.eyebrow;
+    document.getElementById('hero-title').textContent        = L.title;
+    document.getElementById('hero-subtitle').textContent     = L.subtitle;
+    document.getElementById('label-message').textContent     = L.message;
+    document.getElementById('label-inspiration').textContent = L.inspiration;
+    document.getElementById('label-vision').textContent      = L.vision;
+    document.getElementById('page-lang-en').classList.toggle('active', lang==='en');
+    document.getElementById('page-lang-my').classList.toggle('active', lang==='my');
+    if (founderData) renderContent(founderData, lang);
+  }
+
+  window.setPageLang = function(lang) { applyPageLang(lang); };
+
+  // ── Render founder content ──
+  function renderContent(d, lang) {
+    const isEn = lang !== 'my';
+
+    // Name & role (same in both languages)
+    document.getElementById('founder-name').textContent = d.name || '';
+    document.getElementById('founder-role').textContent = d.role || '';
+
+    // Photo
+    if (d.photo_url) {
+      document.getElementById('founder-photo-wrap').innerHTML = `
+        <img src="${d.photo_url}" class="profile-photo" alt="${d.name||'Founder'}">
+        <div class="profile-overlay">
+          <p class="profile-name">${d.name||''}</p>
+          <p class="profile-role">${d.role||''}</p>
+        </div>`;
+    }
+
+    // Quote
+    const quote = isEn ? (d.quote_en||d.quote||'') : (d.quote_my||d.quote_en||d.quote||'');
+    if (quote) {
+      document.getElementById('founder-quote').textContent      = quote;
+      document.getElementById('founder-quote-attr').textContent = `— ${d.name||'Founder'}`;
+      document.getElementById('quote-block').style.display      = 'block';
+    } else {
+      document.getElementById('quote-block').style.display = 'none';
+    }
+
+    // Message
+    const message = isEn ? (d.message_en||d.message||'') : (d.message_my||d.message_en||d.message||'');
+    setBlock('message-block','founder-message', message);
+
+    // Inspiration
+    const inspiration = isEn ? (d.inspiration_en||d.inspiration||'') : (d.inspiration_my||d.inspiration_en||d.inspiration||'');
+    setBlock('inspiration-block','founder-inspiration', inspiration);
+
+    // Vision
+    const vision = isEn ? (d.vision_en||d.vision||'') : (d.vision_my||d.vision_en||d.vision||'');
+    setBlock('vision-block','founder-vision', vision);
+
+    // Values (same in both languages)
+    const vals = tryParse(d.values, []);
+    const valSec = document.getElementById('values-section');
+    const valGrid = document.getElementById('values-grid');
+    if (vals.length > 0) {
+      valSec.style.display = 'block';
+      valGrid.innerHTML = vals.map(v=>`
+        <div class="value-card">
+          <span class="value-icon">${v.icon||'⭐'}</span>
+          <p class="value-title">${v.title||''}</p>
+          <p class="value-desc">${v.desc||''}</p>
+        </div>`).join('');
+    } else {
+      valSec.style.display = 'none';
+    }
+  }
+
+  function setBlock(blockId, textId, text) {
+    document.getElementById(blockId).style.display = text ? 'block' : 'none';
+    document.getElementById(textId).textContent    = text || '';
+  }
+
+  function tryParse(str, fallback) {
+    try { return JSON.parse(str); } catch { return fallback; }
+  }
+
+  // ── Load from Supabase ──
+  async function loadFounderData() {
+    const { data } = await supabase.from('founder_info').select('*').limit(1).single();
+    founderData = data || {};
+    renderContent(founderData, pageLang);
+    observeReveal();
+  }
+
+  // ── Edit panel ──
+  const editPanel = document.getElementById('edit-panel');
+  let editLang = 'en';
+
+  document.getElementById('toggle-edit-btn').addEventListener('click', () => {
+    editPanel.classList.toggle('open');
+    if (editPanel.classList.contains('open')) {
+      populateEditForm();
+      editPanel.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  });
+  document.getElementById('ep-cancel-btn').addEventListener('click', () => editPanel.classList.remove('open'));
+
+  window.switchEditLang = function(lang) {
+    editLang = lang;
+    document.querySelectorAll('.ep-tab').forEach((b,i) => {
+      b.classList.toggle('active', ['en','my','general'][i]===lang);
+    });
+    document.querySelectorAll('.ep-lang-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(`ep-panel-${lang}`).classList.add('active');
+  };
+
+  function populateEditForm() {
+    const d = founderData || {};
+    document.getElementById('ep-name').value          = d.name || '';
+    document.getElementById('ep-role').value          = d.role || '';
+    document.getElementById('ep-quote-en').value      = d.quote_en || d.quote || '';
+    document.getElementById('ep-message-en').value    = d.message_en || d.message || '';
+    document.getElementById('ep-inspiration-en').value = d.inspiration_en || d.inspiration || '';
+    document.getElementById('ep-vision-en').value     = d.vision_en || d.vision || '';
+    document.getElementById('ep-quote-my').value      = d.quote_my || '';
+    document.getElementById('ep-message-my').value    = d.message_my || '';
+    document.getElementById('ep-inspiration-my').value = d.inspiration_my || '';
+    document.getElementById('ep-vision-my').value     = d.vision_my || '';
+
+    const vals = tryParse(d.values, []);
+    document.getElementById('values-rows').innerHTML = '';
+    vals.forEach(v => addValueRow(v));
+
+    if (d.photo_url) {
+      document.getElementById('photo-preview').src         = d.photo_url;
+      document.getElementById('photo-preview-wrap').style.display = 'block';
+    }
+  }
+
+  window.addValueRow = function(data={}) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:grid;grid-template-columns:60px 1fr 2fr auto;gap:.65rem;margin-bottom:.65rem;align-items:start';
+    wrap.innerHTML = `
+      <input class="ep-input val-icon"  placeholder="🕊️" value="${data.icon||''}">
+      <input class="ep-input val-title" placeholder="Value name" value="${data.title||''}">
+      <input class="ep-input val-desc"  placeholder="Short description" value="${data.desc||''}">
+      <button onclick="this.parentElement.remove()" style="background:#fee2e2;color:#991b1b;border:none;border-radius:7px;padding:.62rem .75rem;cursor:pointer;font-size:.9rem">✕</button>`;
+    document.getElementById('values-rows').appendChild(wrap);
+  };
+
+  document.getElementById('ep-photo').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    document.getElementById('photo-preview').src = URL.createObjectURL(f);
+    document.getElementById('photo-preview-wrap').style.display = 'block';
+  });
+
+  document.getElementById('ep-save-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('ep-save-btn');
+    btn.textContent='Saving...'; btn.disabled=true;
+
+    const valRows = document.querySelectorAll('#values-rows > div');
+    const values  = Array.from(valRows).map(row => ({
+      icon:  row.querySelector('.val-icon').value.trim(),
+      title: row.querySelector('.val-title').value.trim(),
+      desc:  row.querySelector('.val-desc').value.trim(),
+    })).filter(v=>v.title);
+
+    let photo_url = founderData?.photo_url || null;
+    const photoFile = document.getElementById('ep-photo').files[0];
+    if (photoFile) {
+      const ext  = photoFile.name.split('.').pop();
+      const name = `founder_${Date.now()}.${ext}`;
+      const { error:upErr } = await supabase.storage.from('general').upload(name, photoFile, {upsert:true});
+      if (!upErr) photo_url = supabase.storage.from('general').getPublicUrl(name).data.publicUrl;
+    }
+
+    const payload = {
+      name:             document.getElementById('ep-name').value.trim(),
+      role:             document.getElementById('ep-role').value.trim(),
+      quote_en:         document.getElementById('ep-quote-en').value.trim(),
+      message_en:       document.getElementById('ep-message-en').value.trim(),
+      inspiration_en:   document.getElementById('ep-inspiration-en').value.trim(),
+      vision_en:        document.getElementById('ep-vision-en').value.trim(),
+      quote_my:         document.getElementById('ep-quote-my').value.trim(),
+      message_my:       document.getElementById('ep-message-my').value.trim(),
+      inspiration_my:   document.getElementById('ep-inspiration-my').value.trim(),
+      vision_my:        document.getElementById('ep-vision-my').value.trim(),
+      values:           JSON.stringify(values),
+      photo_url,
+      updated_at:       new Date().toISOString(),
+    };
+
+    let error;
+    if (founderData?.id) {
+      ({error} = await supabase.from('founder_info').update(payload).eq('id', founderData.id));
+    } else {
+      ({error} = await supabase.from('founder_info').insert([payload]));
+    }
+
+    btn.textContent='💾 Save All Changes'; btn.disabled=false;
+    if (error) { showAlert('Error: '+error.message,'error'); return; }
+    showAlert('✅ Saved successfully!');
+    editPanel.classList.remove('open');
+    await loadFounderData();
+  });
+
+  function showAlert(msg, type='success') {
+    const el = document.getElementById('alert-box');
+    const [bg,bd,col] = type==='success'?['#dcfce7','#86efac','#166534']:['#fee2e2','#fca5a5','#991b1b'];
+    el.innerHTML = `<div style="background:${bg};border:1px solid ${bd};color:${col};padding:.85rem 1.1rem;border-radius:9px;font-size:.93rem">${msg}</div>`;
+    setTimeout(()=>el.innerHTML='',4000);
+  }
+
+  function observeReveal() {
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
+    },{threshold:0.07});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  }
+
+  async function init() {
+    await initNavbar('Founder');
+    await initFooter();
+    applyPageLang(pageLang);
+    await loadFounderData();
+    await initOwnerBar(
+      () => {
+        // onLogin — show edit button, hide visitor bar
+        document.getElementById('admin-bar').style.display = 'flex';
+        const vb = document.getElementById('visitor-bar');
+        if (vb) vb.style.display = 'none';
+      },
+      () => {
+        // onLogout — hide edit button
+        document.getElementById('admin-bar').style.display = 'none';
+        const vb = document.getElementById('visitor-bar');
+        if (vb) vb.style.display = 'block';
+      }
+    );
+  }
+
+  init();
+</script>
+</body>
+</html>

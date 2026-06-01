@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shalom Education Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/transitions.js"></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="navbar-brand" href="index.html">
+    <span id="navbar-brand-logo"></span>
+    <span id="navbar-brand-name">Shalom Education Centre</span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div id="hero-logo"></div>
+    <span class="hero-eyebrow" id="hero-eyebrow">Welcome to</span>
+    <h1>Shalom Education Centre</h1>
+    <p id="hero-tagline">Learning for Life, Growing in Community</p>
+    <div class="hero-btns">
+      <a href="teachers.html" class="btn-primary" id="btn-learn">Learn More</a>
+      <a href="contact.html" class="btn-outline" id="btn-contact">Contact Us</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span id="scroll-label">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div><span class="stat-value">2005</span><span class="stat-label" id="stat-founded">Year Founded</span></div>
+    <div><span class="stat-value">300+</span><span class="stat-label" id="stat-students">Students</span></div>
+    <div><span class="stat-value">20+</span><span class="stat-label" id="stat-teachers">Teachers</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-img" id="about-img">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--brown)">🏫</div>
+      </div>
+      <div class="about-text">
+        <span class="eyebrow" id="about-eyebrow">About Us</span>
+        <h2 id="about-heading">Rooted in Community, Growing in Excellence</h2>
+        <p id="about-desc">Shalom Education Centre is a private school dedicated to nurturing young minds in a caring rural community.</p>
+
+        <!-- VISION -->
+        <div style="margin:1.5rem 0 1rem;padding:1.25rem 1.25rem 1.25rem 1rem;border-left:4px solid #C9A84C;background:#fdfaf5;border-radius:0 8px 8px 0;">
+          <p style="color:#2D5016;font-weight:700;font-size:1rem;margin:0 0 0.6rem;" id="vision-label">🎯 Vision</p>
+          <p style="margin:0;color:#444;font-size:1rem;line-height:1.8;" id="vision-text"></p>
+        </div>
+
+        <!-- MISSION -->
+        <div style="margin:1rem 0 1.5rem;padding:1.25rem 1.25rem 1.25rem 1rem;border-left:4px solid #2D5016;background:#f5f9f2;border-radius:0 8px 8px 0;">
+          <p style="color:#2D5016;font-weight:700;font-size:1rem;margin:0 0 0.75rem;" id="mission-label">📖 Mission</p>
+          <p style="margin:0 0 0.75rem;color:#444;font-size:1rem;line-height:1.8;" id="mission-intro"></p>
+          <ul style="margin:0;padding-left:1.25rem;color:#444;font-size:1rem;line-height:2;list-style:none;" id="mission-list"></ul>
+        </div>
+
+        <a href="teachers.html" class="text-link" id="about-link">Meet our teachers →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST ARTICLES -->
+<section class="section section-white">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow" id="news-eyebrow">Updates</span>
+      <h2 class="section-title-dark" id="news-heading">Latest News</h2>
+    </div>
+    <div class="cards-grid" id="articles-preview">
+      <div class="skeleton" style="height:300px"></div>
+      <div class="skeleton" style="height:300px"></div>
+      <div class="skeleton" style="height:300px"></div>
+    </div>
+    <div class="text-center">
+      <a href="articles.html" class="btn-outline-green" id="news-btn">View All Articles →</a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY PREVIEW -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow" id="gallery-eyebrow">Our Campus</span>
+      <h2 class="section-title-dark" id="gallery-heading">School Life</h2>
+    </div>
+    <div class="gallery-grid" id="gallery-preview">
+      <div class="skeleton" style="aspect-ratio:4/3"></div>
+      <div class="skeleton" style="aspect-ratio:4/3"></div>
+      <div class="skeleton" style="aspect-ratio:4/3"></div>
+      <div class="skeleton" style="aspect-ratio:4/3"></div>
+    </div>
+    <div class="text-center">
+      <a href="media.html" class="btn-outline-green" id="gallery-btn">View Full Gallery →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHERS PREVIEW -->
+<section class="section section-green">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow" id="teachers-eyebrow">Our People</span>
+      <h2 class="section-title-light" id="teachers-heading">Meet Our Teachers</h2>
+    </div>
+    <div class="teachers-grid" id="teachers-preview">
+      <div class="skeleton" style="height:200px;background:rgba(245,240,232,0.1)"></div>
+      <div class="skeleton" style="height:200px;background:rgba(245,240,232,0.1)"></div>
+      <div class="skeleton" style="height:200px;background:rgba(245,240,232,0.1)"></div>
+      <div class="skeleton" style="height:200px;background:rgba(245,240,232,0.1)"></div>
+    </div>
+    <div class="text-center">
+      <a href="teachers.html" class="btn-outline" id="teachers-btn" style="border-color:rgba(245,240,232,0.4)">Meet All Teachers →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDAR PREVIEW -->
+<section class="section section-white" style="padding:4rem 1.5rem">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Stay Updated</span>
+      <h2 class="section-title-dark">📅 Upcoming Events</h2>
+    </div>
+    <div id="upcoming-events" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem">
+      <div class="skeleton" style="height:90px;border-radius:12px"></div>
+      <div class="skeleton" style="height:90px;border-radius:12px"></div>
+      <div class="skeleton" style="height:90px;border-radius:12px"></div>
+    </div>
+    <div class="text-center">
+      <a href="calendar.html" class="btn-outline-green">View Full Calendar →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER TEASER -->
+<section style="background:linear-gradient(135deg,#1a3009 0%,#2D5016 100%);padding:5rem 1.5rem;position:relative;overflow:hidden">
+  <div style="position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:rgba(201,168,76,0.06);pointer-events:none"></div>
+  <div style="position:absolute;bottom:-40px;left:-40px;width:220px;height:220px;border-radius:50%;background:rgba(201,168,76,0.04);pointer-events:none"></div>
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:3rem;align-items:center">
+    <div>
+      <span style="color:var(--gold);font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:.75rem">Our Story</span>
+      <h2 style="font-family:var(--font-head);color:var(--cream);font-size:clamp(1.6rem,4vw,2.4rem);margin:0 0 1rem;line-height:1.2" id="founder-teaser-name">A Message from Our Founder</h2>
+      <p style="color:rgba(245,240,232,0.72);font-size:1.05rem;line-height:1.85;margin:0 0 2rem" id="founder-teaser-quote">Discover the heart and vision behind Shalom Education Centre — the story of faith, community, and a dream for every child.</p>
+      <a href="founder.html" style="background:var(--gold);color:var(--green-dark);padding:.85rem 2.25rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem;font-family:var(--font-body);display:inline-block">Read Founder's Story →</a>
+    </div>
+    <div style="text-align:center">
+      <div id="founder-teaser-photo" style="width:200px;height:200px;border-radius:50%;background:rgba(201,168,76,0.15);border:3px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:4rem;margin:0 auto">🕊️</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer"></footer>
+
+<script type="module">
+  import { supabase, initNavbar, initFooter, articleCard, teacherCardDark, loadSchoolInfo } from './js/supabase.js';
+  import { t } from './js/lang.js';
+
+  function applyTranslations() {
+    document.getElementById('hero-eyebrow').textContent   = t('hero_welcome');
+    document.getElementById('btn-learn').textContent      = t('hero_learn');
+    document.getElementById('btn-contact').textContent    = t('hero_contact');
+    document.getElementById('scroll-label').textContent   = t('hero_scroll');
+    document.getElementById('stat-founded').textContent   = t('stat_founded');
+    document.getElementById('stat-students').textContent  = t('stat_students');
+    document.getElementById('stat-teachers').textContent  = t('stat_teachers');
+    document.getElementById('about-eyebrow').textContent  = t('about_eyebrow');
+    document.getElementById('about-heading').textContent  = t('about_heading');
+    document.getElementById('about-desc').textContent     = t('about_desc');
+    document.getElementById('vision-label').textContent   = t('vision_label');
+    document.getElementById('vision-text').textContent    = t('vision_text');
+    document.getElementById('mission-label').textContent  = t('mission_label');
+    document.getElementById('mission-intro').textContent  = t('mission_intro');
+    document.getElementById('about-link').textContent     = t('about_link');
+    document.getElementById('news-eyebrow').textContent   = t('news_eyebrow');
+    document.getElementById('news-heading').textContent   = t('news_heading');
+    document.getElementById('news-btn').textContent       = t('news_btn');
+    document.getElementById('gallery-eyebrow').textContent = t('gallery_eyebrow');
+    document.getElementById('gallery-heading').textContent = t('gallery_heading');
+    document.getElementById('gallery-btn').textContent    = t('gallery_btn');
+    document.getElementById('teachers-eyebrow').textContent = t('teachers_eyebrow');
+    document.getElementById('teachers-heading').textContent = t('teachers_heading');
+    document.getElementById('teachers-btn').textContent   = t('teachers_btn');
+
+    // Mission bullet points
+    const missionItems = ['mission_1','mission_2','mission_3','mission_4','mission_5'];
+    document.getElementById('mission-list').innerHTML = missionItems.map(k => `
+      <li style="margin-bottom:0.5rem;padding-left:0.5rem;">
+        <span style="color:#C9A84C;font-weight:700;margin-right:0.5rem;">›</span>${t(k)}
+      </li>`).join('');
+  }
+
+  async function init() {
+    applyTranslations();
+    const info = await loadSchoolInfo();
+
+    await initNavbar('Home');
+    await initFooter(info);
+
+    // Hero tagline from DB or translation fallback
+    document.getElementById('hero-tagline').textContent = info.tagline || t('hero_tagline');
+
+    // Hero logo
+    const heroLogoEl = document.getElementById('hero-logo');
+    heroLogoEl.innerHTML = info.logo_url
+      ? `<img class="hero-logo" src="${info.logo_url}" alt="School Logo">`
+      : `<div class="hero-logo-placeholder">🏫</div>`;
+
+    // Hero background
+    if (info.hero_url) {
+      document.getElementById('hero').style.backgroundImage = `url(${info.hero_url})`;
+    }
+
+    // About image
+    if (info.logo_url) {
+      document.getElementById('about-img').innerHTML =
+        `<img src="${info.logo_url}" alt="Shalom Education Centre" style="width:100%;height:100%;object-fit:cover">`;
+    }
+
+    // Latest 3 articles
+    const { data: articles } = await supabase.from('articles').select('*').order('published_at', { ascending: false }).limit(3);
+    const ap = document.getElementById('articles-preview');
+    ap.innerHTML = (!articles || articles.length === 0)
+      ? `<div class="empty-state" style="grid-column:1/-1"><span class="emoji">📰</span>${t('news_empty')}</div>`
+      : articles.map(articleCard).join('');
+
+    // Gallery preview
+    const { data: photos } = await supabase.from('gallery_photos').select('*').limit(4);
+    const gp = document.getElementById('gallery-preview');
+    gp.innerHTML = (!photos || photos.length === 0)
+      ? `<div class="empty-state" style="grid-column:1/-1"><span class="emoji">🖼️</span>${t('gallery_empty')}</div>`
+      : photos.map(p => `<a href="media.html" class="gallery-item"><img src="${p.photo_url}" alt="${p.caption || ''}" loading="lazy"></a>`).join('');
+
+    // Teachers preview
+    const { data: teachers } = await supabase.from('teachers').select('*').order('display_order', { ascending: true }).limit(4);
+    const tp = document.getElementById('teachers-preview');
+    tp.innerHTML = (!teachers || teachers.length === 0)
+      ? `<div class="empty-state" style="grid-column:1/-1;color:rgba(245,240,232,0.5)"><span class="emoji">👩‍🏫</span>${t('teachers_empty')}</div>`
+      : teachers.map(teacherCardDark).join('');
+
+    // Upcoming calendar events (next 3)
+    const today = new Date().toISOString().slice(0,10);
+    const { data: events } = await supabase.from('school_events')
+      .select('*').gte('start_date', today)
+      .order('start_date', { ascending: true }).limit(3);
+    const evWrap = document.getElementById('upcoming-events');
+    const TYPE_COLORS = { holiday:'#e74c3c', exam:'#e67e22', activity:'#27ae60', academic:'#2980b9', other:'#8e44ad' };
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    if (!events || events.length === 0) {
+      evWrap.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--brown)">No upcoming events. <a href="calendar.html" style="color:var(--green);font-weight:600">Add events to the calendar →</a></div>`;
+    } else {
+      evWrap.innerHTML = events.map(ev => {
+        const d = new Date(ev.start_date);
+        const col = TYPE_COLORS[ev.event_type] || '#8e44ad';
+        return `<a href="calendar.html" style="text-decoration:none">
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border);padding:1rem 1.25rem;display:flex;gap:1rem;align-items:center;transition:transform .2s,box-shadow .2s;box-shadow:0 2px 8px rgba(45,80,22,.05)"
+            onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(45,80,22,.12)'"
+            onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 8px rgba(45,80,22,.05)'">
+            <div style="width:50px;text-align:center;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex-shrink:0">
+              <div style="background:${col};color:#fff;font-size:.62rem;font-weight:700;text-transform:uppercase;padding:.18rem 0;letter-spacing:.06em">${MONTHS[d.getMonth()]}</div>
+              <div style="font-family:var(--font-head);font-size:1.4rem;font-weight:700;color:var(--green);padding:.15rem 0 .25rem;background:var(--cream)">${d.getDate()}</div>
+            </div>
+            <div style="flex:1;min-width:0">
+              <p style="font-weight:700;color:var(--green);margin:0 0 .2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ev.title}</p>
+              <span style="background:${col};color:#fff;padding:.12rem .55rem;border-radius:50px;font-size:.7rem;font-weight:700;text-transform:uppercase">${ev.event_type||'event'}</span>
+            </div>
+          </div>
+        </a>`;
+      }).join('');
+    }
+
+    // Founder teaser
+    const { data: founder } = await supabase.from('founder_info').select('name,quote,photo_url').limit(1).single();
+    if (founder) {
+      if (founder.name) document.getElementById('founder-teaser-name').textContent = `A Message from ${founder.name}`;
+      if (founder.quote) document.getElementById('founder-teaser-quote').textContent = `"${founder.quote}"`;
+      if (founder.photo_url) {
+        document.getElementById('founder-teaser-photo').innerHTML =
+          `<img src="${founder.photo_url}" alt="${founder.name}" style="width:200px;height:200px;border-radius:50%;object-fit:cover;border:3px solid rgba(201,168,76,0.6)">`;
+      }
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
